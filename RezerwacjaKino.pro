@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,7 +25,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += Headers/mainwindow.h \
            Headers/newreservation.h \
-           /Headers/newreservation.h
+           Headers/newreservation.h \
+           Headers/database.h
+
+
+
 FORMS += Forms/mainwindow.ui Forms/newreservation.ui
-SOURCES += main.cpp Sources/mainwindow.cpp Sources/newreservation.cpp
+
+
+SOURCES += main.cpp \
+           Sources/mainwindow.cpp \
+           Sources/newreservation.cpp \
+           Sources/database.cpp
+
 
