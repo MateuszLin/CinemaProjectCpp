@@ -18,14 +18,22 @@ class newReservation : public QDialog
 public:
     explicit newReservation(QWidget *parent = 0);
 
+
     ~newReservation();
+
+private:
+      int hallID;
+      int showId;
+
+      int &refHall = hallID;
+      int &refShow = showId;
 
 
 private slots:
-
     void on_movieCB_activated(int index);
-
     void on_dateCB_activated(int index);
+    void on_pushButton_clicked();
+
 
 private:
     Ui::newReservation *ui;

@@ -26,16 +26,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += Headers/mainwindow.h \
            Headers/newreservation.h \
            Headers/newreservation.h \
-           Headers/database.h
+           Headers/database.h \
+    Headers/chooiceseats.h
 
 
 
-FORMS += Forms/mainwindow.ui Forms/newreservation.ui
+FORMS += Forms/mainwindow.ui Forms/newreservation.ui \
+    Forms/chooiceseats.ui
 
 
 SOURCES += main.cpp \
            Sources/mainwindow.cpp \
            Sources/newreservation.cpp \
-           Sources/database.cpp
+           Sources/database.cpp \
+    Sources/chooiceseats.cpp
 
 

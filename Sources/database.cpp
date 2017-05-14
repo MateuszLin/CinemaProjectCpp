@@ -23,10 +23,8 @@ void Database::getAllMovies(QComboBox *box)
 
         while(qry.next())
         {
-
              qDebug() << qry.value(nameCol).toString();
              box->addItem(qry.value(nameCol).toString());
-
         }
     }
 
@@ -39,9 +37,9 @@ void Database::getDateTime(QComboBox *box, int index)
     box->clear();
 
     cinemaDB.open();
-    index++;
+    qDebug() << cinemaDB.open() << " open db";
     QSqlQuery qry;
-    qry.prepare("Select * from movieShows where movie_id = (:index)");
+    qry.prepare("Select timeAndDate from movieShows where movie_id = (:index)");
     qry.bindValue(":index", index);
 
 
@@ -57,7 +55,10 @@ void Database::getDateTime(QComboBox *box, int index)
             box->addItem("Wybór daty i godziny...");
             QSqlRecord rec = qry.record();
             int dateCol = rec.indexOf("timeAndDate");
+
+
             box->addItem(qry.value(dateCol).toString());
+
 
             while(qry.next())
             {
@@ -72,5 +73,57 @@ void Database::getDateTime(QComboBox *box, int index)
 
     cinemaDB.close();
 }
+
+void Database::setHallId(int movieId, int & hall, QString date, int &show)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("Select hall_id, id from movieShows where movie_id = (:movieId) and timeAndDate = (:date)");
+    qry.bindValue(":movieId", movieId);
+    qry.bindValue(":date", date);
+    qDebug() << "movie id" << movieId;
+    qDebug() << "date " << date;
+
+    if(qry.exec())
+    {
+       if(qry.first())
+       {
+           QSqlRecord rec = qry.record();
+           int hallCol = rec.indexOf("hall_id");
+           int idCol = rec.indexOf("id");
+
+           int id = qry.value(idCol).toInt();
+           int hallid = qry.value(hallCol).toInt();
+           qDebug() << "date " << hallid << " value " << qry.value(hallCol);
+           qDebug() << "id " << id << " value " << qry.value(idCol);
+           hall = hallid;
+           show = id;
+       }
+    }
+    cinemaDB.close();
+}
+
+void Database::seatsCount(int &hall, int &seatsCount)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("Select slots from cinemaHall where id_hall = (:hall)");
+    qry.bindValue(":hall", hall);
+
+    if(qry.exec())
+    {
+        if(qry.first())
+        {
+            QSqlRecord rec = qry.record();
+            int slotsCol = rec.indexOf("slots");
+            int slotsHall = qry.value(slotsCol).toInt();
+            seatsCount = slotsHall;
+        }
+    }
+
+    cinemaDB.close();
+}
+
+
 
 
