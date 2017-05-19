@@ -150,14 +150,14 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>254</x>
      <y>280</y>
-     <width>75</width>
+     <width>101</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>push</string>
+    <string>Wybierz miejsca</string>
    </property>
   </widget>
  </widget>

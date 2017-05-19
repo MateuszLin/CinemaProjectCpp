@@ -1,8 +1,6 @@
 #include "Headers/newreservation.h"
 #include "ui_newreservation.h"
-#include "Headers/database.h"
-#include "Headers/chooiceseats.h"
-#include <QMessageBox>
+
 
 
 using namespace std;
@@ -72,14 +70,29 @@ void newReservation::on_pushButton_clicked()
             && ui->nameLE->text().count() > 1 && ui->surnameLE->text().count() > 1
             && ui->ticketLE->text().toInt() > 0)
     {
-        chooiceSeats* seats = new chooiceSeats();
-        seats->setModal(true);
-        seats->setText(ui->infoBrowser->toPlainText());
-        seats->setShowID(showId);
-        seats->setSeatsCount(ui->ticketLE->text().toInt());
-        seats->setHallID(hallID);
-        seats->generateSeats();
-        seats->exec();
+        QList<int> list;
+        QList<int> &refList = list;
+        int counter = 0;
+        int &refCounter = counter;
+        dB.whichSeatsBooked(refShow, refList, refCounter);
+        dB.seatsCount(refHall, refhallSeats);
+        if(refhallSeats - refCounter < ui->ticketLE->text().toInt())
+        {
+            QMessageBox::warning(this, tr("Błąd!"), tr("Nie ma tylu wolnych miejsc!"));
+        }
+        else
+        {
+            chooiceSeats* seats = new chooiceSeats();
+            seats->setModal(true);
+            seats->setText(ui->infoBrowser->toPlainText());
+            seats->setNameAndSurname(ui->nameLE->text(), ui->surnameLE->text());
+            seats->setShowID(showId);
+            seats->setSeatsCount(ui->ticketLE->text().toInt());
+            seats->setHallID(hallID);
+            seats->setDbPointer(dB);
+            seats->generateSeats(refhallSeats, refList);
+            seats->exec();
+        }
     }
     else
     {

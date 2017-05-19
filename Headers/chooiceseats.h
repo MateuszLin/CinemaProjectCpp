@@ -4,6 +4,10 @@
 #include <QDialog>
 #include "QListWidgetItem"
 #include "Headers/database.h"
+#include "Headers/newreservation.h"
+#include "QCheckBox"
+#include "Headers/database.h"
+
 
 namespace Ui {
 class chooiceSeats;
@@ -18,30 +22,26 @@ public:
     void setText(QString text);
     void setHallID(int hall);
     void setShowID(int showId);
+    void setNameAndSurname(QString name, QString surname);
     void setSeatsCount(int count);
-    void generateSeats();
+    void setDbPointer(Database base);
+    void generateSeats(int &seats, QList<int> &refList);
 
 
     ~chooiceSeats();
 private:
     void setSeatsEnabled(bool);
+    QString rezervationSeats();
+    Ui::chooiceSeats *ui;
+    QString txt, name, surname;
+    int hallID, tickets, showID, hallSeats;
+    int &refHall = hallID, &refhallSeats = hallSeats;
+    Database *dB;
 
 private slots:
     void on_pushButton_clicked();
     void check(bool);
 
-
-
-private:
-    Ui::chooiceSeats *ui;
-    QString txt;
-    int hallID;
-    int &refHall = hallID;
-    int tickets;
-    int hallSeats;
-    int &refhallSeats = hallSeats;
-    int showID;
-    Database &dB;
 
 };
 

@@ -1,10 +1,9 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 #include <iostream>
-#include <QDialog>
 #include <QtSql>
 #include <QtDebug>
-#include <QFileInfo>
+
 
 
 using namespace std;
@@ -21,6 +20,12 @@ public:
     void getDateTime(QComboBox*, int);
     void setHallId(int movieId, int &hall, QString date, int &show);
     void seatsCount(int &hall, int &seatsCount);
+    int newRezervationId();
+    void addRezervation(int id, int show_id, int hall, QString name, QString surname, QString seats);
+    void whichSeatsBooked(int &show, QList<int> &seats, int &counter);
+    //void addRezervation(int id, int &hallId, );
 };
+
+
 
 #endif // DATABASE_H

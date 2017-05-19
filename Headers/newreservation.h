@@ -1,11 +1,11 @@
 #ifndef NEWRESERVATION_H
 #define NEWRESERVATION_H
 
-#include <QDialog>
+#include "Headers/database.h"
+#include "Headers/chooiceseats.h"
 #include <QtSql>
 #include <QtDebug>
-#include <QFileInfo>
-#include "Headers/database.h"
+#include <QMessageBox>
 
 namespace Ui {
 class newReservation;
@@ -24,9 +24,8 @@ public:
 private:
       int hallID;
       int showId;
-
-      int &refHall = hallID;
-      int &refShow = showId;
+      int hallSeats;
+      int &refHall = hallID, &refShow = showId,  &refhallSeats = hallSeats;
 
 
 private slots:

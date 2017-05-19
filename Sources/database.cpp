@@ -124,6 +124,88 @@ void Database::seatsCount(int &hall, int &seatsCount)
     cinemaDB.close();
 }
 
+int Database::newRezervationId()
+{
+    int count = 0;
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("Select count(rezervation_id) from rezervation");
+    if(qry.exec())
+    {
+        if(qry.first())
+        {
+            QSqlRecord rec = qry.record();
+            int idCol = rec.indexOf("count(rezervation_id)");
+            count = qry.value(idCol).toInt();
+        }
+    }
+    \
+    cinemaDB.close();
+    count++;
+
+    return count;
+
+}
+
+void Database::addRezervation(int id, int show_id, int hall, QString name, QString surname, QString seats)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("Insert into rezervation (rezervation_id, show_id, hall_id, name, surname, seats) values ((:id), (:show), (:hall), (:name), (:surname), (:seats))");
+    qry.bindValue(":id", id);
+    qry.bindValue(":show", show_id);
+    qry.bindValue(":hall", hall);
+    qry.bindValue(":name", name);
+    qry.bindValue(":surname", surname);
+    qry.bindValue(":seats", seats);
+
+    qry.exec();
+    cinemaDB.commit();
+    qDebug() << "dodano";
+    cinemaDB.close();
+
+
+}
+
+void Database::whichSeatsBooked(int &show, QList<int> &seats, int &counter)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("Select seats from rezervation where show_id = (:show)");
+    qry.bindValue(":show", show);
+    qDebug() << "show " << show;
+
+    QString seatsS = "";
+    counter = 0;
+
+    if(qry.exec())
+    {
+        QSqlRecord rec = qry.record();
+        int seatsCol = rec.indexOf("seats");
+
+        while(qry.next())
+        {
+            seatsS += qry.value(seatsCol).toString();
+        }
+    }
+
+    qDebug() << "string seats " << seatsS;
+    QStringList split = seatsS.split(";");
+    for (int var = 0; var < split.length() - 1; ++var) {
+        qDebug() << "split " << split[var];
+        seats.append(split[var].toInt());
+        counter++;
+    }
+
+    foreach (int var, seats) {
+        qDebug() << "int " << var;
+
+    }
+
+    cinemaDB.close();
+
+}
+
 
 
 

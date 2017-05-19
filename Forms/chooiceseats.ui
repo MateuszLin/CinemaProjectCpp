@@ -47,7 +47,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Potwierdź</string>
    </property>
   </widget>
   <widget class="QLabel" name="counterLabel">
