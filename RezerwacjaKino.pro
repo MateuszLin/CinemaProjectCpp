@@ -27,18 +27,19 @@ HEADERS += Headers/mainwindow.h \
            Headers/newreservation.h \
            Headers/newreservation.h \
            Headers/database.h \
-    Headers/chooiceseats.h
+           Headers/chooiceseats.h
 
 
 
-FORMS += Forms/mainwindow.ui Forms/newreservation.ui \
-    Forms/chooiceseats.ui
+FORMS += Forms/mainwindow.ui \
+         Forms/newreservation.ui \
+         Forms/chooiceseats.ui
 
 
 SOURCES += main.cpp \
            Sources/mainwindow.cpp \
            Sources/newreservation.cpp \
            Sources/database.cpp \
-    Sources/chooiceseats.cpp
+           Sources/chooiceseats.cpp
 
 

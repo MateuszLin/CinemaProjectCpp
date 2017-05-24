@@ -4,13 +4,12 @@
 
 Database::Database()
 {
-    cinemaDB.setDatabaseName("C:/Users/daron/Documents/RezerwacjaKino/rezervationDB.db");
+    cinemaDB.setDatabaseName("C:/Users/daron/Documents/C++/RezerwacjaKino/rezervationDB.db");
 }
 
 void Database::getAllMovies(QComboBox *box)
 {
     QSqlQuery qry;
-
 
     cinemaDB.open();
     qry.prepare("select * from movies order by movie_id asc");
@@ -151,7 +150,8 @@ void Database::addRezervation(int id, int show_id, int hall, QString name, QStri
 {
     cinemaDB.open();
     QSqlQuery qry;
-    qry.prepare("Insert into rezervation (rezervation_id, show_id, hall_id, name, surname, seats) values ((:id), (:show), (:hall), (:name), (:surname), (:seats))");
+    qry.prepare("Insert into rezervation (rezervation_id, show_id, hall_id, name, surname, seats) "
+                "values ((:id), (:show), (:hall), (:name), (:surname), (:seats))");
     qry.bindValue(":id", id);
     qry.bindValue(":show", show_id);
     qry.bindValue(":hall", hall);

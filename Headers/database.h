@@ -1,5 +1,6 @@
 #ifndef DATABASE_H
 #define DATABASE_H
+
 #include <iostream>
 #include <QtSql>
 #include <QtDebug>
@@ -23,7 +24,7 @@ public:
     int newRezervationId();
     void addRezervation(int id, int show_id, int hall, QString name, QString surname, QString seats);
     void whichSeatsBooked(int &show, QList<int> &seats, int &counter);
-    //void addRezervation(int id, int &hallId, );
+
 };
 
 

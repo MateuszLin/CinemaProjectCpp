@@ -2,8 +2,6 @@
 #define CHOOICESEATS_H
 
 #include <QDialog>
-#include "QListWidgetItem"
-#include "Headers/database.h"
 #include "Headers/newreservation.h"
 #include "QCheckBox"
 #include "Headers/database.h"
@@ -26,13 +24,14 @@ public:
     void setSeatsCount(int count);
     void setDbPointer(Database base);
     void generateSeats(int &seats, QList<int> &refList);
-
+    bool getIsSeatsReserved();
 
     ~chooiceSeats();
 private:
     void setSeatsEnabled(bool);
     QString rezervationSeats();
     Ui::chooiceSeats *ui;
+    bool isSeatsReserved = false;
     QString txt, name, surname;
     int hallID, tickets, showID, hallSeats;
     int &refHall = hallID, &refhallSeats = hallSeats;

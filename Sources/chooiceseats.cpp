@@ -73,6 +73,12 @@ void chooiceSeats::generateSeats(int &seats, QList<int> &refList)
 
 }
 
+bool chooiceSeats::getIsSeatsReserved()
+{
+    return isSeatsReserved;
+
+}
+
 void chooiceSeats::setSeatsEnabled(bool state)
 {
     for (int var = 0; var < ui->gridL->count() ; var++) {
@@ -152,6 +158,8 @@ void chooiceSeats::on_pushButton_clicked()
          if(reply == QMessageBox::Yes)
          {
              dB->addRezervation(id, showID, hallID, name, surname, seats);
+             isSeatsReserved = true;
+             this->close();
          }
              qDebug() << "OK";
 

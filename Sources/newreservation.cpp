@@ -92,6 +92,7 @@ void newReservation::on_pushButton_clicked()
             seats->setDbPointer(dB);
             seats->generateSeats(refhallSeats, refList);
             seats->exec();
+            if(seats->getIsSeatsReserved()) this->close();
         }
     }
     else
