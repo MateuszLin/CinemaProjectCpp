@@ -30,7 +30,7 @@ void Database::getAllMovies(QComboBox *box)
     cinemaDB.close();
 }
 
-void Database::getDateTime(QComboBox *box, int index)
+void Database::getDateTime(QComboBox *box, int index, bool modif)
 {
 
     box->clear();
@@ -51,7 +51,8 @@ void Database::getDateTime(QComboBox *box, int index)
         }
         else
         {
-            box->addItem("Wybór daty i godziny...");
+            if(!modif) box->addItem("Wybór daty i godziny...");
+
             QSqlRecord rec = qry.record();
             int dateCol = rec.indexOf("timeAndDate");
 
@@ -61,7 +62,7 @@ void Database::getDateTime(QComboBox *box, int index)
 
             while(qry.next())
             {
-                qDebug() << qry.value(dateCol).toString();
+                //qDebug() << qry.value(dateCol).toString();
                 box->addItem(qry.value(dateCol).toString());
 
             }
@@ -204,6 +205,105 @@ void Database::whichSeatsBooked(int &show, QList<int> &seats, int &counter)
 
     cinemaDB.close();
 
+}
+
+void Database::getModifyPass(QString &pass, int &id)
+{
+    cinemaDB.open();
+
+    QSqlQuery qry;
+    qry.prepare("Select rezervation_id from rezervation where pass = (:pass)");
+    qry.bindValue(":pass", pass);
+
+    if(qry.exec())
+    {
+        if(qry.first())
+        {
+            QSqlRecord rec = qry.record();
+            int colId = rec.indexOf("rezervation_id");
+            id = qry.value(colId).toInt();
+        }
+        else
+        {
+            id = 0;
+        }
+    }
+    cinemaDB.close();
+
+
+}
+
+void Database::getRezervationInfo(int &id, int &showid, int &hallid, QString &name, QString &surname, QString &seats)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("Select * from rezervation where rezervation_id = (:id)");
+    qry.bindValue(":id", id);
+
+    if(qry.exec())
+    {
+        if(qry.first())
+        {
+            QSqlRecord rec = qry.record();
+            int showCol = rec.indexOf("show_id");
+            int hallCol = rec.indexOf("hall_id");
+            int nameCol = rec.indexOf("name");
+            int surnameCol = rec.indexOf("surname");
+            int seatsCol = rec.indexOf("seats");
+
+            showid = qry.value(showCol).toInt();
+            hallid = qry.value(hallCol).toInt();
+            name = qry.value(nameCol).toString();
+            surname = qry.value(surnameCol).toString();
+            seats = qry.value(seatsCol).toString();
+
+        }
+    }
+    cinemaDB.close();
+
+}
+
+void Database::getmovieShowInfo(int &id, int &movieid, QString &timeDate)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("Select * from movieShows where id = (:id)");
+    qry.bindValue(":id", id);
+
+
+    if(qry.exec())
+    {
+        if(qry.first())
+        {
+            QSqlRecord rec = qry.record();
+            int movieIdCol = rec.indexOf("movie_id");
+            int timeDateCol = rec.indexOf("timeAndDate");
+            timeDate = qry.value(timeDateCol).toString();
+            movieid = qry.value(movieIdCol).toInt();
+        }
+    }
+    cinemaDB.close();
+}
+
+void Database::getMovieName(int &id, QString &name)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("Select name from movies where movie_id = (:id)");
+    qry.bindValue(":id", id);
+
+
+    if(qry.exec())
+    {
+        if(qry.first())
+        {
+            QSqlRecord rec = qry.record();
+            int nameCol = rec.indexOf("name");
+            name = qry.value(nameCol).toString();
+        }
+    }
+
+    cinemaDB.close();
 }
 
 

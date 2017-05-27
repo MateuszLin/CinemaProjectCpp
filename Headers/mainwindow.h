@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include "Headers/newreservation.h"
-
+#include "Headers/modifyrezervation.h"
+#include "Headers/database.h"
+#include "QInputDialog"
+#include <QtDebug>
 
 namespace Ui {
 class MainWindow;
@@ -21,8 +24,16 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
 
+
+    void on_pushButton_3_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QString pass;
+    int id;
+    int &refId = id;
+    QString &refPass = pass;
+
 };
 
 #endif // MAINWINDOW_H
