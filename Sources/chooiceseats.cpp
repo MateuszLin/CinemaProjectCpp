@@ -146,12 +146,11 @@ void chooiceSeats::check(bool state)
 }
 
 
-
-
 chooiceSeats::~chooiceSeats()
 {
     delete ui;
 }
+
 
 void chooiceSeats::on_pushButton_clicked()
 {
@@ -180,8 +179,6 @@ void chooiceSeats::on_pushButton_clicked()
              isSeatsReserved = true;
              this->close();
          }
-
-
     }
     else
     {

@@ -113,5 +113,12 @@ void modifyRezervation::on_pushButton_clicked()
 
 void modifyRezervation::on_pushButton_2_clicked()
 {
-
+    QMessageBox::StandardButton reply;
+     reply = QMessageBox::question(this, "Usuwanie","Czy na pewno chcesz usunac rezerwacje?\n",
+                                   QMessageBox::Yes|QMessageBox::No);
+     if(reply == QMessageBox::Yes)
+     {
+         dB.deleteRezervation(refrezId);
+         this->close();
+     }
 }

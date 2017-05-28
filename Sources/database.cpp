@@ -326,6 +326,18 @@ void Database::modifyRezervation(int &id, int &showid, int &hallid, QString seat
     cinemaDB.close();
 }
 
+void Database::deleteRezervation(int &id)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("DELETE FROM rezervation WHERE rezervation_id = (:id)");
+    qry.bindValue(":id", id);
+
+    qry.exec();
+    cinemaDB.commit();
+    cinemaDB.close();
+}
+
 
 
 
