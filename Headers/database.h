@@ -23,12 +23,12 @@ public:
     void seatsCount(int &hall, int &seatsCount);
     int newRezervationId();
     void addRezervation(int id, int show_id, int hall, QString name, QString surname, QString seats);
-    void whichSeatsBooked(int &show, QList<int> &seats, int &counter);
+    void whichSeatsBooked(int &show, QList<int> &seats, int &counter, int rezrvId = 0);
     void getModifyPass(QString &pass, int &refId);
     void getRezervationInfo(int &id, int &showid, int &hallid, QString &name, QString &surname, QString &seats);
     void getmovieShowInfo(int &id, int &movieid, QString &timeDate);
     void getMovieName(int &id, QString &name);
-
+    void modifyRezervation(int &id, int &showid, int &hallid, QString seats);
 };
 
 

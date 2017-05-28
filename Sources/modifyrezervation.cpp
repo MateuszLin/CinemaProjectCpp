@@ -7,14 +7,6 @@ modifyRezervation::modifyRezervation(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->ticketLE->setValidator(new QIntValidator(1, 100, this));
-    //id rez
-    //show_id
-    //hall_id
-    //name
-    //surname
-    //seats
-
-
 }
 
 modifyRezervation::~modifyRezervation()
@@ -37,8 +29,6 @@ void modifyRezervation::getRezervationInfo()
     dB.getmovieShowInfo(refShowid, refmovieId, refTimeAndDate);
     dB.getMovieName(refmovieId, refMovieName);
     dB.getDateTime(ui->timeandDateCB, movieId, true);
-
-
 }
 
 void modifyRezervation::setTextBrowser()
@@ -78,4 +68,50 @@ void modifyRezervation::on_timeandDateCB_activated(int index)
 {
     dB.setHallId(movieId, refhallid, ui->timeandDateCB->itemText(index), refShowid);
     setTextBrowser();
+}
+
+void modifyRezervation::on_pushButton_clicked()
+{
+    if(ui->ticketLE->text().toInt() > 0)
+    {
+        QList<int> list;
+        QList<int> &refList = list;
+        int counter = 0;
+        int &refCounter = counter;
+        dB.whichSeatsBooked(refShowid, refList, refCounter, refrezId);
+        dB.seatsCount(refhallid, refhallSeats);
+        if(refhallSeats - refCounter < ui->ticketLE->text().toInt())
+        {
+            QMessageBox::warning(this, tr("Błąd!"), tr("Nie ma tylu wolnych miejsc!"));
+        }
+        else
+        {
+            {
+                chooiceSeats* seats = new chooiceSeats();
+                seats->setModal(true);
+                seats->setText(ui->text->toPlainText());
+                seats->setNameAndSurname("", "");
+                seats->setShowID(showid);
+                seats->setSeatsCount(ui->ticketLE->text().toInt());
+                seats->setHallID(hallid);
+                seats->setDbPointer(dB);
+                seats->generateSeats(refhallSeats, refList);
+                seats->setIsModifyRezerv(true);
+                seats->setRezervId(refrezId);
+                seats->exec();
+                if(seats->getIsSeatsReserved()) this->close();
+            }
+        }
+
+    }
+    else
+    {
+        QMessageBox::warning(this, tr("Błąd!"), tr("Błędy w formularzu!"));
+    }
+
+}
+
+void modifyRezervation::on_pushButton_2_clicked()
+{
+
 }

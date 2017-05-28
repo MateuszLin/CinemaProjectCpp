@@ -168,11 +168,11 @@ void Database::addRezervation(int id, int show_id, int hall, QString name, QStri
 
 }
 
-void Database::whichSeatsBooked(int &show, QList<int> &seats, int &counter)
+void Database::whichSeatsBooked(int &show, QList<int> &seats, int &counter,  int rezrvId)
 {
     cinemaDB.open();
     QSqlQuery qry;
-    qry.prepare("Select seats from rezervation where show_id = (:show)");
+    qry.prepare("Select seats, rezervation_id from rezervation where show_id = (:show)");
     qry.bindValue(":show", show);
     qDebug() << "show " << show;
 
@@ -183,10 +183,12 @@ void Database::whichSeatsBooked(int &show, QList<int> &seats, int &counter)
     {
         QSqlRecord rec = qry.record();
         int seatsCol = rec.indexOf("seats");
+        int rezerIdCol = rec.indexOf("rezervation_id");
 
         while(qry.next())
         {
-            seatsS += qry.value(seatsCol).toString();
+            int temp = qry.value(rezerIdCol).toInt();
+            if(temp != rezrvId) seatsS += qry.value(seatsCol).toString();
         }
     }
 
@@ -303,6 +305,24 @@ void Database::getMovieName(int &id, QString &name)
         }
     }
 
+    cinemaDB.close();
+}
+
+void Database::modifyRezervation(int &id, int &showid, int &hallid, QString seats)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("UPDATE rezervation SET show_id = (:showid), "
+                "hall_id = (:hallid), "
+                "seats = (:seats) "
+                "where rezervation_id = (:id)");
+    qry.bindValue(":showid", showid);
+    qry.bindValue(":hallid", hallid);
+    qry.bindValue(":seats", seats);
+    qry.bindValue(":id", id);
+
+    qry.exec();
+    cinemaDB.commit();
     cinemaDB.close();
 }
 

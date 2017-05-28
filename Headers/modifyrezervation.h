@@ -3,8 +3,9 @@
 
 #include <QDialog>
 #include <QtDebug>
+#include <QMessageBox>
 #include "Headers/database.h"
-
+#include "Headers/chooiceseats.h"
 
 namespace Ui {
 class modifyRezervation;
@@ -22,14 +23,19 @@ public:
 private slots:
     void on_timeandDateCB_activated(int index);
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::modifyRezervation *ui;
     QString name, surname, seats, timeAndDate, movieName;
     QString &refName = name, &refSurname = surname, &refSeats = seats,
             &refTimeAndDate = timeAndDate, &refMovieName = movieName;
 
-    int showid, hallid, rezId, movieId, ticket = 0;
-    int &refShowid = showid, &refhallid = hallid, &refrezId = rezId, &refmovieId = movieId, &refticket = ticket;
+    int showid, hallid, hallSeats, rezId, movieId, ticket = 0;
+    int &refShowid = showid, &refhallid = hallid, &refrezId = rezId, &refmovieId = movieId,
+        &refticket = ticket, refhallSeats = hallSeats;
     Database dB;
     void getRezervationInfo();
     void setTextBrowser();

@@ -110,6 +110,16 @@ QString chooiceSeats::rezervationSeats()
     return seats;
 }
 
+void chooiceSeats::setIsModifyRezerv(bool isModif)
+{
+    isModifyRezerv = isModif;
+}
+
+void chooiceSeats::setRezervId(int &ref)
+{
+    rezervId = ref;
+}
+
 
 
 void chooiceSeats::check(bool state)
@@ -147,7 +157,8 @@ void chooiceSeats::on_pushButton_clicked()
 {
     if(ui->counterLabel->text().toInt() == 0)
     {
-        int id = dB->newRezervationId();
+        int id;
+        if(!isModifyRezerv) id = dB->newRezervationId();
         QString seats = rezervationSeats();
         qDebug() << seats;
 
@@ -157,13 +168,20 @@ void chooiceSeats::on_pushButton_clicked()
                                        QMessageBox::Yes|QMessageBox::No);
          if(reply == QMessageBox::Yes)
          {
-             dB->addRezervation(id, showID, hallID, name, surname, seats);
+             if(isModifyRezerv)
+             {
+                dB->modifyRezervation(refRezervId, showID, hallID, seats);
+
+             }
+             else
+             {
+                 dB->addRezervation(id, showID, hallID, name, surname, seats);
+             }
              isSeatsReserved = true;
              this->close();
          }
-             qDebug() << "OK";
 
-        //qDebug() << name << surname << "\n" << txt;
+
     }
     else
     {

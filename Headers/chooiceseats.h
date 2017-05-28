@@ -25,16 +25,18 @@ public:
     void setDbPointer(Database base);
     void generateSeats(int &seats, QList<int> &refList);
     bool getIsSeatsReserved();
+    void setIsModifyRezerv(bool);
+    void setRezervId(int &ref);
 
     ~chooiceSeats();
 private:
     void setSeatsEnabled(bool);
     QString rezervationSeats();
     Ui::chooiceSeats *ui;
-    bool isSeatsReserved = false;
+    bool isSeatsReserved = false, isModifyRezerv = false;
     QString txt, name, surname;
-    int hallID, tickets, showID, hallSeats;
-    int &refHall = hallID, &refhallSeats = hallSeats;
+    int hallID, tickets, showID, hallSeats, rezervId;
+    int &refHall = hallID, &refhallSeats = hallSeats, &refRezervId = rezervId;
     Database *dB;
 
 private slots:
