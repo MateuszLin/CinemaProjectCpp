@@ -59,7 +59,7 @@ void adminsPanel::on_addShowBtn_clicked()
         qDebug() << " time " << time << " date " << date << " sala nr " << hallID << " id " << id << " id m " << movieID;
         int &refHall = hallID, &refID = id, &refMovieID = movieID;
         dB.addMovieShow(refID, refMovieID, refHall, date + " " + time);
-        QMessageBox::information(this, tr("Sukces"), tr("Dodano seans do bazy"))
+        QMessageBox::information(this, tr("Sukces"), tr("Dodano seans do bazy"));
     }
     else
     {
