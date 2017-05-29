@@ -167,17 +167,24 @@ void chooiceSeats::on_pushButton_clicked()
                                        QMessageBox::Yes|QMessageBox::No);
          if(reply == QMessageBox::Yes)
          {
+             QString content = "con";
+
              if(isModifyRezerv)
              {
                 dB->modifyRezervation(refRezervId, showID, hallID, seats);
-
+                content = "Modifykacja rezerwacji przebiegla pomyslnie";
              }
              else
              {
                  QString pass = QString::number(id) + QString::number(rand() % 100 + 10);
                  qDebug() << id;
                  dB->addRezervation(id, showID, hallID, name, surname, seats, pass.toInt());
+                 content = "Pomyslnie zarejestrowano rezerwacje\nTwoj kod to: " + pass;
              }
+             QByteArray ba = content.toLatin1();
+             const char*c = ba.data();
+
+             QMessageBox::information(this, tr("Sukces"), tr(c));
              isSeatsReserved = true;
              this->close();
          }
