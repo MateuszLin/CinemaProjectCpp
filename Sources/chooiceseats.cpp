@@ -1,6 +1,6 @@
 #include "Headers/chooiceseats.h"
 #include "ui_chooiceseats.h"
-
+#include <stdlib.h>
 
 
 
@@ -174,7 +174,9 @@ void chooiceSeats::on_pushButton_clicked()
              }
              else
              {
-                 dB->addRezervation(id, showID, hallID, name, surname, seats);
+                 QString pass = QString::number(id) + QString::number(rand() % 100 + 10);
+                 qDebug() << id;
+                 dB->addRezervation(id, showID, hallID, name, surname, seats, pass.toInt());
              }
              isSeatsReserved = true;
              this->close();

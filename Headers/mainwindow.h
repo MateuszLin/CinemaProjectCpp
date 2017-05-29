@@ -5,6 +5,7 @@
 #include "Headers/newreservation.h"
 #include "Headers/modifyrezervation.h"
 #include "Headers/database.h"
+#include"Headers/adminspanel.h"
 #include "QInputDialog"
 #include <QtDebug>
 

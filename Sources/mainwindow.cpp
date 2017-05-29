@@ -47,5 +47,20 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    QString adminPass = QInputDialog::getText(this, "Hasło", "Wprowadź hasło dla administratora:");
+    Database dB;
+    QString &refadminPass = adminPass;
+    if(dB.isAdminPassCorrect(refadminPass))
+    {
+        adminsPanel panel;
+        panel.setModal(true);
+        panel.exec();
+    }
+    else
+    {
+        QMessageBox box;
+        box.setText("Hasło nieprawidłowe");
+        box.exec();
+    }
 
 }

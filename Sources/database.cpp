@@ -30,6 +30,29 @@ void Database::getAllMovies(QComboBox *box)
     cinemaDB.close();
 }
 
+void Database::getAllHalls(QComboBox *box)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("SELECT * FROM cinemaHall ORDER BY id_hall");
+
+    if(qry.exec())
+    {
+        QSqlRecord rec = qry.record();
+
+        int idCol = rec.indexOf("id_hall");
+        int slotsCol = rec.indexOf("slots");
+
+        while(qry.next())
+        {
+            QString item = "Sala nr. " + qry.value(idCol).toString() + " ilosc miejsc " + qry.value(slotsCol).toString();
+            box->addItem(item);
+        }
+    }
+
+    cinemaDB.close();
+}
+
 void Database::getDateTime(QComboBox *box, int index, bool modif)
 {
 
@@ -129,17 +152,16 @@ int Database::newRezervationId()
     int count = 0;
     cinemaDB.open();
     QSqlQuery qry;
-    qry.prepare("Select count(rezervation_id) from rezervation");
+    qry.prepare("Select rezervation_id from rezervation ORDER BY rezervation_id");
     if(qry.exec())
     {
-        if(qry.first())
+        if(qry.last())
         {
             QSqlRecord rec = qry.record();
-            int idCol = rec.indexOf("count(rezervation_id)");
+            int idCol = rec.indexOf("rezervation_id");
             count = qry.value(idCol).toInt();
         }
     }
-    \
     cinemaDB.close();
     count++;
 
@@ -147,24 +169,109 @@ int Database::newRezervationId()
 
 }
 
-void Database::addRezervation(int id, int show_id, int hall, QString name, QString surname, QString seats)
+int Database::newMovieID()
+{
+    int id = 0;
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("SELECT movie_id FROM movies ORDER BY movie_id");
+
+    if(qry.exec())
+    {
+        if(qry.last())
+        {
+            QSqlRecord rec = qry.record();
+            int idCol = rec.indexOf("movie_id");
+            id = qry.value(idCol).toInt();
+        }
+    }
+    cinemaDB.close();
+
+    id++;
+    return id;
+}
+
+int Database::newMovieShowId()
+{
+    int id = 0;
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("SELECT id FROM movieShows ORDER BY id");
+
+    if(qry.exec())
+    {
+        if(qry.last())
+        {
+            QSqlRecord rec = qry.record();
+            int idCol = rec.indexOf("id");
+
+            id = qry.value(idCol).toInt();
+        }
+    }
+
+    cinemaDB.close();
+    id++;
+    return id;
+}
+
+bool Database::isAdminPassCorrect(QString &ref)
+{
+    bool correct = false;
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("SELECT * FROM admins WHERE pass = (:pass)");
+    qry.bindValue(":pass", ref);
+
+    if(qry.exec())
+    {
+        if(qry.first())
+        {
+            correct = true;
+        }
+    }
+
+
+    cinemaDB.close();
+    return correct;
+
+}
+
+void Database::addRezervation(int id, int show_id, int hall, QString name, QString surname, QString seats, int pass)
 {
     cinemaDB.open();
     QSqlQuery qry;
-    qry.prepare("Insert into rezervation (rezervation_id, show_id, hall_id, name, surname, seats) "
-                "values ((:id), (:show), (:hall), (:name), (:surname), (:seats))");
+    qry.prepare("Insert into rezervation (rezervation_id, show_id, hall_id, name, surname, seats, pass) "
+                "values ((:id), (:show), (:hall), (:name), (:surname), (:seats), (:pass))");
     qry.bindValue(":id", id);
     qry.bindValue(":show", show_id);
     qry.bindValue(":hall", hall);
     qry.bindValue(":name", name);
     qry.bindValue(":surname", surname);
     qry.bindValue(":seats", seats);
+    qry.bindValue(":pass", pass);
 
     qry.exec();
     cinemaDB.commit();
     qDebug() << "dodano";
     cinemaDB.close();
 
+
+}
+
+void Database::addMovieShow(int &id, int &movieId, int &hallId, QString timeDate)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("INSERT INTO movieShows(id, movie_id, hall_id, timeAndDate) "
+                "VALUES((:id), (:movieID), (:hallID), (:timeAndDate))");
+    qry.bindValue(":id", id);
+    qry.bindValue(":movieID", movieId);
+    qry.bindValue(":hallID", hallId);
+    qry.bindValue(":timeAndDate", timeDate);
+
+    qry.exec();
+    cinemaDB.commit();
+    cinemaDB.close();
 
 }
 
@@ -337,6 +444,21 @@ void Database::deleteRezervation(int &id)
     cinemaDB.commit();
     cinemaDB.close();
 }
+
+void Database::addMovie(QString &movieName, int &id)
+{
+    cinemaDB.open();
+    QSqlQuery qry;
+    qry.prepare("INSERT INTO movies(movie_id, name) VALUES((:id), (:name))");
+    qry.bindValue(":id", id);
+    qry.bindValue(":name", movieName);
+
+    qry.exec();
+    cinemaDB.commit();
+    cinemaDB.close();
+}
+
+
 
 
 
