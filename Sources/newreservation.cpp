@@ -12,7 +12,7 @@ newReservation::newReservation(QWidget *parent) :
     ui->setupUi(this);
 
     ui->ticketLE->setValidator(new QIntValidator(1, 100, this));
-    QRegExp expr("[a-zA-Z]+");
+    QRegExp expr("[A-Z]+[A-Z a-z]+");
     QRegExpValidator *v = new QRegExpValidator(expr, this);
     ui->nameLE->setValidator(v);
     ui->surnameLE->setValidator(v);

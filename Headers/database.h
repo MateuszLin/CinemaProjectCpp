@@ -34,7 +34,6 @@ public:
     void getMovieName(int &id, QString &name);
     void modifyRezervation(int &id, int &showid, int &hallid, QString seats);
     void deleteRezervation(int &id);
-
     void addMovie(QString &movieName, int &id);
 };
 

@@ -65,9 +65,8 @@ void adminsPanel::on_addShowBtn_clicked()
     {
         QMessageBox::warning(this, tr("Błąd!"), tr("Błędy w formularzu!"));
     }
-
-
 }
+
 
 void adminsPanel::on_dateShowLE_textChanged(const QString &arg1)
 {
@@ -80,6 +79,7 @@ void adminsPanel::on_dateShowLE_textChanged(const QString &arg1)
         break;
     }
 }
+
 
 void adminsPanel::on_timeShowLE_textChanged(const QString &arg1)
 {

@@ -27,8 +27,8 @@ public:
     bool getIsSeatsReserved();
     void setIsModifyRezerv(bool);
     void setRezervId(int &ref);
-
     ~chooiceSeats();
+
 private:
     void setSeatsEnabled(bool);
     QString rezervationSeats();
